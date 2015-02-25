@@ -50,8 +50,8 @@ class GodZip(object):
             data = string_or_bytes.encode()
         else:
             data = string_or_bytes
-        gz_data = gzip.compress(data, 9)
-
+        gz_data = gzip.compress(data)
+        print(gz_data)
         speech_of_god = list(random.choice(self.capital_tuples))
         for byte in gz_data:
             while byte != 0:
@@ -80,7 +80,7 @@ class GodZip(object):
 
     def decode_words(self, holy_words):
         """Decode a list of holy words into unholy bytes."""
-
+        print(holy_words)
         try:
             holy_tuple = tuple(holy_words[:self.tuple_length])
         except:
@@ -90,26 +90,33 @@ class GodZip(object):
         unholy_num = 0
         bit_counter = 0
         for holy_word in holy_words[self.tuple_length:]:
-
-            bit_counter += 1
-            if bit_counter % 8 == 0:
-                unholy_bytes += bytes([unholy_num])
-                unholy_num = 0
             try:
                 holy_ngram_list = self.god_grams[holy_tuple]
             except:
                 raise Heresy("Thou shalt not modify the word of God!")
+
+            holy_tuple = tuple(holy_tuple[1:] + (holy_word,))
+
+            if len(holy_ngram_list) <= 1:
+                continue
 
             try:
                 unholy_bit = holy_ngram_list.index(holy_word) % 2
             except:
                 raise Heresy("Not one word of God shall be changed!")
 
-            print(bit_counter % 8, unholy_num, unholy_bit)
-            unholy_num += (unholy_num << 1) + unholy_bit
-            holy_tuple = tuple(holy_tuple[1:] + (holy_word,))
+            unholy_num |= unholy_bit << (7 - bit_counter)
+            print(bit_counter, unholy_num, unholy_bit)
+            bit_counter += 1
+            if bit_counter % 8 == 0:
+                unholy_bytes += bytes([unholy_num])
+                unholy_num = 0
+                bit_counter = 0
 
-        print(unholy_bytes.decode())
+        print(unholy_bytes)
+        print(gzip.decompress(unholy_bytes))
+
+        return unholy_bytes
 
     def decode(self, annotated_speech):
         """Decode holy speech into bytes"""
