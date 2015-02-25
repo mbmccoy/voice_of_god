@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Thine Holy Voice of God</title>
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+        <style type="text/css">
+            body { text-align: center; margin: 20px; }
+            pre { padding: inherit; background-color: inherit; border: 0px; }
+
+            .alert { padding: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+
+            <!-- Title bar -->
+            <div class="row">
+                <h1 class="well well-sm" style="padding: 10px; color: #06f"><strong>Thine Holy Voice of God</strong></h1>
+            </div>
+
+            <!-- Encode -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-hand-o-up"></i>&nbsp;&nbsp;<strong>I sayeth unto the Lord</strong>
+                        </div>
+                        <div class="panel-body">
+                            <textarea class="form-control" rows="7" id="encode-text"></textarea>
+                            <div class="alert alert-success" role="alert" id="encode-output-alert" style="display: none;">
+                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="encode-output"></pre></div>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="encode-submit"><b>Praise unto Him!</b></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decode -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-hand-o-down"></i>&nbsp;&nbsp;<strong>His Holyness speaks</strong>
+                        </div>
+                        <div class="panel-body">
+                            <textarea class="form-control" rows="7" id="decode-text"></textarea>
+                            <div class="alert alert-danger" role="alert" id="decode-output-alert" style="display: none;">
+                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="decode-output"></pre></div>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="decode-submit"><b>Sayeth the Lord!</b></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="/static/js/jquery-2.0.3.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $('#encode-submit').on('click', function(e) {
+                    $.post("/encode", { words: $('#encode-text').val() }, function(text) {
+                        $('#encode-output').empty();
+                        $('#encode-output').append(text);
+                        $('#encode-output-alert').css('display', 'block');
+                    });
+                });
+
+                $('#decode-submit').on('click', function(e) {
+                    $.post("/decode", { words: $('#decode-text').val() }, function(text) {
+                        $('#decode-output').empty();
+                        $('#decode-output').append(text);
+                        $('#decode-output-alert').css('display', 'block');
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
