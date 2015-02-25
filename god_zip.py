@@ -4,6 +4,12 @@ import random
 
 import textwrap
 
+
+class Heresy(Exception):
+    """You have defiled the word of God!"""
+    pass
+
+
 def generate_ngrams(filename, tuple_length):
 
     def file_words(file_pointer):
@@ -22,15 +28,15 @@ def generate_ngrams(filename, tuple_length):
                 continue
             ngrams[tuple(word_list)].add(word)
             word_list = word_list[1:] + [word]
-    return ngrams
+    return {key: list(val) for key, val in ngrams.items()}
 
 
 class GodZip(object):
 
     hallelujah = "Sayeth the Lord:\n\n"
-    amen = "\n\n\nAmen.\n"
+    amen = "\n\nAmen."
 
-    def __init__(self, tuple_length=3, line_width=50):
+    def __init__(self, tuple_length=3, line_width=70):
         self.line_width = line_width
         self.tuple_length = tuple_length
         self.god_grams = generate_ngrams('data/bible-kjv.raw.txt', tuple_length)
@@ -55,8 +61,8 @@ class GodZip(object):
                     speech_of_god.append(list(holy_words)[0])
                     continue
 
+                # Encode using method zero
                 bit, byte = byte % 2, byte >> 1
-
                 if bit:
                     chosen_word = random.choice(list(holy_words)[::2])
                 else:
@@ -70,13 +76,69 @@ class GodZip(object):
                 for idx, holy_phrase in enumerate(holy_sentences)
             ]
         )
-
         return self.hallelujah + annotated_speech_of_god + self.amen
 
-    def decode(self):
-        pass
+
+    def decode(self, annotated_speech):
+        """Decode holy speech into bytes"""
+
+        split_annotated_speech = annotated_speech.split('\n\n')
+
+        # Remove hallelujah and amen
+        if split_annotated_speech[0] not in self.hallelujah \
+                or split_annotated_speech[-1] not in self.amen:
+            raise Heresy("Your praise is insufficient!")
+
+        try:
+            holy_annotated_sentences = split_annotated_speech[1:-1]
+        except:
+            raise Heresy("The word of God will not be silenced!")
+
+        try:
+            holy_words = ' '.join([sentence.split('] ')[1] for sentence in holy_annotated_sentences]).split()
+        except:
+            raise Heresy("How dare you imitate the word of God!")
+
+        try:
+            holy_tuple = tuple(holy_words[:self.tuple_length])
+        except:
+            raise Heresy("You mock the word of God!")
+
+        unholy_bytes = b''
+        unholy_num = 0
+        bit_counter = 0
+        for holy_word in holy_words[self.tuple_length:]:
+
+            bit_counter += 1
+            if bit_counter % 8 == 0:
+                unholy_bytes += bytes([unholy_num])
+                unholy_num = 0
+
+            try:
+                holy_ngram_list = self.god_grams[holy_tuple]
+            except:
+                raise Heresy("Thou shalt not modify the word of God!")
+
+            try:
+                unholy_bit = holy_ngram_list.index(holy_word) % 2
+            except:
+                print(holy_tuple, holy_ngram_list, holy_word)
+                raise
+                raise Heresy("Not one word of God shall be changed!")
+
+            unholy_num += (unholy_num << 1) + unholy_bit
+            holy_tuple = tuple(holy_tuple[1:] + (holy_word,))
+
+        print(unholy_bytes.decode())
+
+
+
 
 
 if __name__ == '__main__':
     x = GodZip()
-    print(x.encode('Hello world!'))
+    holy_hello_world = x.encode('Hello world!')
+    print(holy_hello_world)
+    x.decode(holy_hello_world)
+
+
