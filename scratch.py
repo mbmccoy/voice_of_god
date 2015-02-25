@@ -17,7 +17,6 @@ def file_words(file_pointer):
 if __name__ == '__main__':
     filename = 'data/bible-kjv.raw.txt'
     tuple_length = 4
-
     word_map = defaultdict(lambda: set())
 
     with open(filename, 'r') as fp:
@@ -28,7 +27,6 @@ if __name__ == '__main__':
             if len(word_list) < tuple_length:
                 word_list.append(word)
                 continue
-
             word_map[tuple(word_list)].add(word)
             word_list = word_list[1:] + [word]
 

@@ -10,6 +10,15 @@ class Heresy(Exception):
     pass
 
 
+def bits(byte_string):
+    """Generates a sequence of bits from a byte stream"""
+    for byte in byte_string:
+        for bit_num in range(8):
+            # Extract bit from byte
+            byte, bit = byte >> 1, byte % 2
+            yield bit
+
+
 def generate_ngrams(filename, tuple_length):
 
     def file_words(file_pointer):
@@ -28,7 +37,8 @@ def generate_ngrams(filename, tuple_length):
                 continue
             ngrams[tuple(word_list)].add(word)
             word_list = word_list[1:] + [word]
-    return {key: list(val) for key, val in ngrams.items()}
+
+    return {key: tuple(val) for key, val in ngrams.items()}
 
 
 class GodZip(object):
@@ -36,7 +46,8 @@ class GodZip(object):
     hallelujah = "Sayeth the Lord:\n\n"
     amen = "\n\nAmen."
 
-    def __init__(self, tuple_length=3, line_width=70):
+    def __init__(self, tuple_length=3, line_width=70, compress=0):
+        self.compress = compress
         self.line_width = line_width
         self.tuple_length = tuple_length
         self.god_grams = generate_ngrams('data/bible-kjv.raw.txt', tuple_length)
@@ -50,31 +61,31 @@ class GodZip(object):
         if not isinstance(string_or_bytes, bytes):
             data = string_or_bytes.encode()
         else:
-            data = string_or_bytes
-
+            data = string_or_bytes[:]  # Makes a copy
 
         # Compress bytes
-        gz_data = gzip.compress(data)
-        print(gz_data)
+        if self.compress:
+            data = gzip.compress(data)
+        else:
+            data = data
 
         # Start with a capitalized tuple
         speech_of_god = list(random.choice(self.capital_tuples))
-        for byte in gz_data:
-            for bit_number in range(8):
 
+        for bit in bits(data):
+            holy_tuple = tuple(speech_of_god[-self.tuple_length:])
+            holy_words = self.god_grams[holy_tuple]
+
+            # Make sure that we have some words to choose from
+            while len(holy_words) <= 1:
+                chosen_word = holy_words[0]
+                speech_of_god.append(chosen_word)
                 holy_tuple = tuple(speech_of_god[-self.tuple_length:])
                 holy_words = self.god_grams[holy_tuple]
-                if len(holy_words) < 2:  # Make sure that we have some words to choose
-                    speech_of_god.append(list(holy_words)[0])
-                    continue
 
-                # Encode using method zero
-                bit, byte = byte % 2, byte >> 1
-                if bit:
-                    chosen_word = random.choice(list(holy_words)[::2])
-                else:
-                    chosen_word = random.choice(list(holy_words)[1::2])
-                speech_of_god.append(chosen_word)
+            # Select from even indices if bit == 0, odd if bit == 1
+            chosen_word = random.choice(holy_words[bit::2])
+            speech_of_god.append(chosen_word)
 
         holy_sentences = ' '.join(speech_of_god).split('. ')
         annotated_speech_of_god = '.\n\n'.join(
@@ -111,12 +122,15 @@ class GodZip(object):
             except:
                 raise Heresy("Not one word of God shall be changed!")
 
-            unholy_num |= unholy_bit << (7 - bit_counter)
+            unholy_num |= unholy_bit << bit_counter
             bit_counter += 1
             if bit_counter % 8 == 0:
                 unholy_bytes += bytes([unholy_num])
                 unholy_num = 0
                 bit_counter = 0
+
+        if self.compress:
+            unholy_bytes = gzip.decompress(unholy_bytes)
 
         return unholy_bytes
 
@@ -145,10 +159,17 @@ class GodZip(object):
 
         return self.reveal_from_words(holy_words)
 
+
+def hex_expand(byte_str):
+    return ':'.join('{:02x}'.format(byte) for byte in byte_str)
+
 if __name__ == '__main__':
-    x = GodZip()
-    holy_hello_world = x.praise('Hello world!')
-    #print(holy_hello_world)
-    print(x.reveal(holy_hello_world))
+    god = GodZip()
+    hello_world = 'Hello world!'
+    holy_hello_world = god.praise(hello_world)
+
+    print(holy_hello_world)
+    print(hex_expand(hello_world.encode()))
+    print(hex_expand(god.reveal(holy_hello_world)))
 
 
