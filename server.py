@@ -25,11 +25,11 @@ def flask_index():
     return render_template('index.html', **context)
     
 
-@app.route("/encode", methods=['GET', 'POST'])
+@app.route("/praise", methods=['GET', 'POST'])
 def flask_encode():
-    return god.encode(request.form['words'])
+    return god.praise(request.form['words'])
 
-@app.route("/decode", methods=['GET', 'POST'])
+@app.route("/reveal", methods=['GET', 'POST'])
 def flask_decode():
     return 'decoded'
 

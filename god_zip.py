@@ -43,18 +43,25 @@ class GodZip(object):
         self.capital_tuples = [key for key, value in self.god_grams.items()
                                if key[0][0].isupper()]
 
-    def encode(self, string_or_bytes):
+    def praise(self, string_or_bytes):
         """Encode unicode string or bytes into into Holy speech"""
 
+        # Convert to bytes if its a string
         if not isinstance(string_or_bytes, bytes):
             data = string_or_bytes.encode()
         else:
             data = string_or_bytes
+
+
+        # Compress bytes
         gz_data = gzip.compress(data)
         print(gz_data)
+
+        # Start with a capitalized tuple
         speech_of_god = list(random.choice(self.capital_tuples))
         for byte in gz_data:
-            while byte != 0:
+            for bit_number in range(8):
+
                 holy_tuple = tuple(speech_of_god[-self.tuple_length:])
                 holy_words = self.god_grams[holy_tuple]
                 if len(holy_words) < 2:  # Make sure that we have some words to choose
@@ -78,9 +85,8 @@ class GodZip(object):
         )
         return self.hallelujah + annotated_speech_of_god + self.amen
 
-    def decode_words(self, holy_words):
+    def reveal_from_words(self, holy_words):
         """Decode a list of holy words into unholy bytes."""
-        print(holy_words)
         try:
             holy_tuple = tuple(holy_words[:self.tuple_length])
         except:
@@ -106,45 +112,43 @@ class GodZip(object):
                 raise Heresy("Not one word of God shall be changed!")
 
             unholy_num |= unholy_bit << (7 - bit_counter)
-            print(bit_counter, unholy_num, unholy_bit)
             bit_counter += 1
             if bit_counter % 8 == 0:
                 unholy_bytes += bytes([unholy_num])
                 unholy_num = 0
                 bit_counter = 0
 
-        print(unholy_bytes)
-        print(gzip.decompress(unholy_bytes))
-
         return unholy_bytes
 
-    def decode(self, annotated_speech):
+    def reveal(self, annotated_speech):
         """Decode holy speech into bytes"""
 
         split_annotated_speech = annotated_speech.split('\n\n')
 
-        # Remove hallelujah and amen
-        if split_annotated_speech[0] not in self.hallelujah \
-                or split_annotated_speech[-1] not in self.amen:
+        # Check for hallelujah and amen
+        if split_annotated_speech[0] != self.hallelujah.strip() \
+                or split_annotated_speech[-1] != self.amen.strip():
             raise Heresy("Your praise is insufficient!")
 
+        # Remove hallelujah and amen
         try:
             holy_annotated_sentences = split_annotated_speech[1:-1]
         except:
             raise Heresy("The word of God will not be silenced!")
 
+        # Remove line annotations
         try:
             holy_words = ' '.join([sentence.split('] ')[1]
                                    for sentence in holy_annotated_sentences]).split()
         except:
             raise Heresy("How dare you imitate the word of God!")
 
-        return self.decode_words(holy_words)
+        return self.reveal_from_words(holy_words)
 
 if __name__ == '__main__':
     x = GodZip()
-    holy_hello_world = x.encode('Hello world!')
-    print(holy_hello_world)
-    x.decode(holy_hello_world)
+    holy_hello_world = x.praise('Hello world!')
+    #print(holy_hello_world)
+    print(x.reveal(holy_hello_world))
 
 
