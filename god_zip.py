@@ -78,6 +78,38 @@ class GodZip(object):
         )
         return self.hallelujah + annotated_speech_of_god + self.amen
 
+    def decode_words(self, holy_words):
+        """Decode a list of holy words into unholy bytes."""
+
+        try:
+            holy_tuple = tuple(holy_words[:self.tuple_length])
+        except:
+            raise Heresy("You mock the word of God!")
+
+        unholy_bytes = b''
+        unholy_num = 0
+        bit_counter = 0
+        for holy_word in holy_words[self.tuple_length:]:
+
+            bit_counter += 1
+            if bit_counter % 8 == 0:
+                unholy_bytes += bytes([unholy_num])
+                unholy_num = 0
+            try:
+                holy_ngram_list = self.god_grams[holy_tuple]
+            except:
+                raise Heresy("Thou shalt not modify the word of God!")
+
+            try:
+                unholy_bit = holy_ngram_list.index(holy_word) % 2
+            except:
+                raise Heresy("Not one word of God shall be changed!")
+
+            print(bit_counter % 8, unholy_num, unholy_bit)
+            unholy_num += (unholy_num << 1) + unholy_bit
+            holy_tuple = tuple(holy_tuple[1:] + (holy_word,))
+
+        print(unholy_bytes.decode())
 
     def decode(self, annotated_speech):
         """Decode holy speech into bytes"""
@@ -95,45 +127,12 @@ class GodZip(object):
             raise Heresy("The word of God will not be silenced!")
 
         try:
-            holy_words = ' '.join([sentence.split('] ')[1] for sentence in holy_annotated_sentences]).split()
+            holy_words = ' '.join([sentence.split('] ')[1]
+                                   for sentence in holy_annotated_sentences]).split()
         except:
             raise Heresy("How dare you imitate the word of God!")
 
-        try:
-            holy_tuple = tuple(holy_words[:self.tuple_length])
-        except:
-            raise Heresy("You mock the word of God!")
-
-        unholy_bytes = b''
-        unholy_num = 0
-        bit_counter = 0
-        for holy_word in holy_words[self.tuple_length:]:
-
-            bit_counter += 1
-            if bit_counter % 8 == 0:
-                unholy_bytes += bytes([unholy_num])
-                unholy_num = 0
-
-            try:
-                holy_ngram_list = self.god_grams[holy_tuple]
-            except:
-                raise Heresy("Thou shalt not modify the word of God!")
-
-            try:
-                unholy_bit = holy_ngram_list.index(holy_word) % 2
-            except:
-                print(holy_tuple, holy_ngram_list, holy_word)
-                raise
-                raise Heresy("Not one word of God shall be changed!")
-
-            unholy_num += (unholy_num << 1) + unholy_bit
-            holy_tuple = tuple(holy_tuple[1:] + (holy_word,))
-
-        print(unholy_bytes.decode())
-
-
-
-
+        return self.decode_words(holy_words)
 
 if __name__ == '__main__':
     x = GodZip()
