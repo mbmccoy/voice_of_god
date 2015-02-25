@@ -163,13 +163,13 @@ class GodZip(object):
 def hex_expand(byte_str):
     return ':'.join('{:02x}'.format(byte) for byte in byte_str)
 
+
 if __name__ == '__main__':
     god = GodZip()
     hello_world = 'Hello world!'
+
+    print("I praise unto God: %s\n\n" % hello_world)
     holy_hello_world = god.praise(hello_world)
-
     print(holy_hello_world)
-    print(hex_expand(hello_world.encode()))
-    print(hex_expand(god.reveal(holy_hello_world)))
 
-
+    assert(hello_world == god.reveal(holy_hello_world).decode())
