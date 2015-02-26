@@ -19,7 +19,13 @@ def bits(byte_string):
             yield bit
 
 
-def generate_ngrams(filename, tuple_length):
+def generate_ngram_dict(filename, tuple_length):
+    """ Generate a dict with ngrams as key following words as value
+
+    :param filename:  Filename to read from.
+    :param tuple_length: The length of the ngram keys
+    :return:  Dict of the form {ngram: [next_words], ... }
+    """
 
     def file_words(file_pointer):
         """Generator for words in a file"""
@@ -42,37 +48,32 @@ def generate_ngrams(filename, tuple_length):
 
 
 class GodZip(object):
+    """Turn unholy bits into holy words!"""
 
     hallelujah = "Sayeth the Lord:\n\n"
     amen = "\n\nAmen."
 
-    def __init__(self, tuple_length=3, line_width=70, compress=0):
+    def __init__(self, tuple_length=3, line_width=70, compress=True):
         self.compress = compress
         self.line_width = line_width
         self.tuple_length = tuple_length
-        self.god_grams = generate_ngrams('data/bible-kjv.raw.txt', tuple_length)
+        self.god_grams = generate_ngram_dict('data/bible-kjv.raw.txt', tuple_length)
         self.capital_tuples = [key for key, value in self.god_grams.items()
                                if key[0][0].isupper()]
 
-    def praise(self, string_or_bytes):
-        """Encode unicode string or bytes into into Holy speech"""
+    def praise(self, unholy_bytes):
+        """Encode unholy bytes or unholy unicode into Holy text"""
 
-        # Convert to bytes if its a string
-        if not isinstance(string_or_bytes, bytes):
-            data = string_or_bytes.encode()
-        else:
-            data = string_or_bytes[:]  # Makes a copy
+        if not isinstance(unholy_bytes, bytes):
+            unholy_bytes = unholy_bytes.encode()
 
-        # Compress bytes
         if self.compress:
-            data = gzip.compress(data)
-        else:
-            data = data
+            unholy_bytes = gzip.compress(unholy_bytes)
 
         # Start with a capitalized tuple
         speech_of_god = list(random.choice(self.capital_tuples))
 
-        for bit in bits(data):
+        for bit in bits(unholy_bytes):
             holy_tuple = tuple(speech_of_god[-self.tuple_length:])
             holy_words = self.god_grams[holy_tuple]
 
@@ -166,8 +167,8 @@ def hex_expand(byte_str):
 
 if __name__ == '__main__':
     god = GodZip()
-    hello_world = 'Hello world!'
 
+    hello_world = "Hello world!"
     print("I praise unto God: %s\n\n" % hello_world)
     holy_hello_world = god.praise(hello_world)
     print(holy_hello_world)
