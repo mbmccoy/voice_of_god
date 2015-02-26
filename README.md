@@ -11,11 +11,11 @@ The Bible possesses holy hidden frequencies that reveal fundamental truths about
  Forget base64 or other unanointed text-based encodings. Embrace the Holy Voice of God.
 
 <pre>
-+----------+             +---------------------+             +-----------------+
-|          |   Encode    |                     |   Decode    |                 |
-|   Data   +------------>|  Bible-like quotes  +------------>|  Original Data  |
-|          |             |                     |             |                 |
-+----------+             +---------------------+             +-----------------+
++----------+              +---------------------+              +-----------------+
+|          |    Encode    |                     |    Decode    |                 |
+|   Data   +---(+gzip)--->|  Bible-like quotes  +--(+gunzip)-->|  Original Data  |
+|          |              |                     |              |                 |
++----------+              +---------------------+              +-----------------+
 </pre>
 
 ## Try it
