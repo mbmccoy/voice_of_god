@@ -16,6 +16,7 @@ WEB_PORT = 80
 
 god = god_zip.GodZip()
 app = Flask(__name__)
+#app.debug = True
 
 
 @app.route("/")
@@ -34,8 +35,8 @@ def flask_decode():
     try:
         return god.reveal(request.form['words'])
 
-    except Heresy as h:
-        return str(h)
+    except god_zip.Heresy as h:
+        return "Heresy! " + str(h)
 
 
 app.run()
