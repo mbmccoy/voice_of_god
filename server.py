@@ -28,16 +28,24 @@ def flask_index():
 
 @app.route("/praise", methods=['GET', 'POST'])
 def flask_encode():
-	try:
-    	return god.praise(request.form['words'])
+    words = request.form['words']
+    if len(words) > 10000:
+        words = words[:10000]
+
+    try:
+        return god.praise(words)
 
     except god_zip.Heresy as h:
-    	return "Heresy! " + str(h)
+        return "Heresy! " + str(h)
 
 @app.route("/reveal", methods=['GET', 'POST'])
 def flask_decode():
+    words = request.form['words']
+    if len(words) > 10000:
+        words = words[:10000]
+
     try:
-        return god.reveal(request.form['words'])
+        return god.reveal(words)
 
     except god_zip.Heresy as h:
         return "Heresy! " + str(h)
