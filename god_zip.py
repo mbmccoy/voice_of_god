@@ -94,7 +94,7 @@ class GodZip(object):
         holy_sentences = ' '.join(speech_of_god).split('. ')
         annotated_speech_of_god = '.\n\n'.join(
             [
-                '\n'.join(textwrap.wrap("[{}] ".format(idx) + holy_phrase, width=self.line_width))
+                '\n'.join(textwrap.wrap("[{}] ".format(idx + 1) + holy_phrase, width=self.line_width))
                 for idx, holy_phrase in enumerate(holy_sentences)
             ]
         )

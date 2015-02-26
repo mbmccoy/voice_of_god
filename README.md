@@ -1,8 +1,14 @@
 # Holy Voice of God
-Kneel before thine Savior and praise be unto Him. For he shall reveal Holy truths to thine humble servant. And it was good.
+Kneel before thine Savior and praise be unto Him. For he shall reveal Holy truths to thine humble servant. And it was 
+good.
 
 ## How it works
-Using the Bible, we analysed the frequency of words and their groupings and created a unique mapping (sort of like a fingerprint). From this, we can encode any data into random phrases that closely resemble passages from the Bible, and decode them back into the original data.
+
+The Bible possesses holy hidden frequencies that reveal fundamental truths about your binary data. Holy Voice of God
+ encodes your data in subtle shifts in Bible passages and reveals the Truth within your bits. Any arbitrary bitstream
+ can be encoded and uniquely decoded using Holy Voice of God.  
+ 
+ Forget base64 or other unanointed text-based encodings. Embrace the Holy Voice of God.
 
 <pre>
 +----------+             +---------------------+             +-----------------+
