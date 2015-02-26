@@ -4,6 +4,7 @@
 import os, re
 from time import time
 
+
 # Flask imports
 from flask import Flask, Response, request, abort, render_template, jsonify
 
@@ -16,7 +17,7 @@ WEB_PORT = 80
 
 god = god_zip.GodZip()
 app = Flask(__name__)
-#app.debug = True
+app.debug = True
 
 
 @app.route("/")
@@ -38,20 +39,5 @@ def flask_decode():
     except god_zip.Heresy as h:
         return "Heresy! " + str(h)
 
-
-app.run()
-
-#web_server = WSGIServer(('', WEB_PORT), flask_app)
-#web_server.start()
-
-
-# Busy loop
-#try:
-    # This is gevent.wait()
-#    wait()
-
-#except KeyboardInterrupt:
-#    pass
-
-# Close it down
-#web_server.close()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
