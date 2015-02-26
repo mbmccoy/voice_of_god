@@ -166,7 +166,7 @@ def hex_expand(byte_str):
 
 
 if __name__ == '__main__':
-    god = GodZip()
+    god = GodZip(compress=False)
 
     hello_world = "Hello world!"
     print("I praise unto God: %s\n\n" % hello_world)
