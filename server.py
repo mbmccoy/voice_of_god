@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 # Import basic stuff
-import os, re
-from time import time
+import os
 
 
 # Flask imports
-from flask import Flask, Response, request, abort, render_template, jsonify
+from flask import Flask, request, render_template
 
 # Get the word of God
 import god_zip
@@ -40,4 +39,4 @@ def flask_decode():
         return "Heresy! " + str(h)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=os.environ.get('PORT', 5000))
