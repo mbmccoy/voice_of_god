@@ -5,11 +5,11 @@ Kneel before thine Savior and praise be unto Him. For he shall reveal Holy truth
 Using the Bible, we analysed the frequency of words and their groupings and created a unique mapping (sort of like a fingerprint). From this, we can encode any data into random phrases that closely resemble passages from the Bible, and decode them back into the original data.
 
 <pre>
-+----------+             +---------------------+             +-----------------+
-|          |   Encode    |                     |   Decode    |                 |
-|   Data   +------------>|  Bible-like quotes  +------------>|  Original Data  |
-|          |             |                     |             |                 |
-+----------+             +---------------------+             +-----------------+
++----------+              +---------------------+              +-----------------+
+|          |    Encode    |                     |    Decode    |                 |
+|   Data   +---(+gzip)--->|  Bible-like quotes  +--(+gunzip)-->|  Original Data  |
+|          |              |                     |              |                 |
++----------+              +---------------------+              +-----------------+
 </pre>
 
 ## Try it
