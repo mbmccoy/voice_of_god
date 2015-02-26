@@ -11,11 +11,21 @@ can be encoded and uniquely decoded using Holy Voice of God.
 Forget base64 or other un-anointed binary encodings. Embrace the Holy Voice of God.
 
 <pre>
-+----------+              +---------------------+              +-----------------+
-|          |    Encode    |                     |    Decode    |                 |
-|   Data   +---(+gzip)--->|  Bible-like quotes  +--(+gunzip)-->|  Original Data  |
-|          |              |                     |              |                 |
-+----------+              +---------------------+              +-----------------+
+                                        +------------------------+
++------------------------+              | +--------------------+ |
+|                        |    Encode    | |                    | |
+|   Boring unholy Data   +---(+gzip)--->| |    Bible quotes    | |
+|                        |              | |                    | |
++------------------------+              | +--------------------+ |
+                                        +------------------------+
+
+               +------------------------+
+               | +--------------------+ |              +-----------------+
+               | |                    | |   Decode     |                 |
+               | |    Bible quotes    | +--(+gunzip)-->|  Original Data  |
+               | |                    | |              |                 |
+               | +--------------------+ |              +-----------------+
+               +------------------------+
 </pre>
 
 ## Try it online
@@ -41,12 +51,14 @@ Yes, we've even created an API using Flask.
 
 ### Encode to word of God
 ```
-curl --data "words=I praise unto thee" http://www.holyvoiceofgod.com/praise
+MY_WORDS="I prase unto thee..."
+curl -s --data "words=${MY_WORDS}" http://www.holyvoiceofgod.com/praise | tee HisVoice.txt
 ```
 
 ### Decode back into unholy speak
 ```
-curl --data "words=Thine Holy response as sent from above" http://www.holyvoiceofgod.com/reveal
+HIS_WORDS=`cat HisVoice.txt`
+curl -s --data "words=${HIS_WORDS}" http://www.holyvoiceofgod.com/reveal
 ```
 
 ## Authors
