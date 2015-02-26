@@ -64,6 +64,9 @@ class GodZip(object):
     def praise(self, unholy_bytes):
         """Encode unholy bytes or unholy unicode into Holy text"""
 
+        if not unholy_bytes:
+            Heresy("Thou shalt not be silent in the face of the Lord!")
+
         if not isinstance(unholy_bytes, bytes):
             unholy_bytes = unholy_bytes.encode()
 
