@@ -31,7 +31,11 @@ def flask_encode():
 
 @app.route("/reveal", methods=['GET', 'POST'])
 def flask_decode():
-    return 'decoded'
+    try:
+        return god.reveal(request.form['words'])
+
+    except Heresy as h:
+        return str(h)
 
 
 app.run()

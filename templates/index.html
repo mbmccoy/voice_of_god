@@ -2,13 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Thine Holy Voice of God</title>
+        <title>Holy Voice of God</title>
         <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
         <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
         <style type="text/css">
             body { text-align: center; margin: 20px; }
             pre { padding: inherit; background-color: inherit; border: 0px; }
-
             .alert { padding: 5px; }
         </style>
     </head>
@@ -17,42 +16,44 @@
 
             <!-- Title bar -->
             <div class="row">
-                <h1 class="well well-sm" style="padding: 10px; color: #06f"><strong>Thine Holy Voice of God</strong></h1>
+                <h1 class="well well-sm" style="padding: 10px; color: #06f"><strong>Holy Voice of God</strong></h1>
             </div>
 
-            <!-- Encode -->
+            <!-- Praise -->
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-hand-o-up"></i>&nbsp;&nbsp;<strong>I sayeth unto the Lord</strong>
+                            <i class="fa fa-hand-o-up"></i>&nbsp;&nbsp;<strong>I praise unto the Lord</strong>
                         </div>
                         <div class="panel-body">
-                            <textarea class="form-control" rows="7" id="encode-text"></textarea>
-                            <div class="alert alert-success" role="alert" id="encode-output-alert" style="display: none;">
-                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="encode-output"></pre></div>
+                            <textarea class="form-control" rows="7" id="praise-text"></textarea>
+                            <div class="alert alert-success" role="alert" id="praise-output-alert" style="display: none;">
+                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="praise-output"></pre></div>
                             </div>
-                            <button type="button" class="btn btn-primary" id="encode-submit"><b>Praise unto Him!</b></button>
+                            <button type="button" class="btn btn-primary" id="praise-submit"><b>Praise unto Him!</b></button>
+                            <button type="button" class="btn btn-primary" id="praise-output-move" style="display: none;"><b><i class="fa fa-hand-o-down"></i></b></button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Decode -->
+            <!-- Reveal -->
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-hand-o-down"></i>&nbsp;&nbsp;<strong>His Holyness speaks</strong>
+                            <i class="fa fa-hand-o-down"></i>&nbsp;&nbsp;<strong>His Holyness reveals</strong>
                         </div>
                         <div class="panel-body">
-                            <textarea class="form-control" rows="7" id="decode-text"></textarea>
-                            <div class="alert alert-danger" role="alert" id="decode-output-alert" style="display: none;">
-                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="decode-output"></pre></div>
+                            <textarea class="form-control" rows="7" id="reveal-text"></textarea>
+                            <div class="alert alert-danger" role="alert" id="reveal-output-alert" style="display: none;">
+                                <div style="text-align: left;"><pre style="height: 150px; overflow: auto;" id="reveal-output"></pre></div>
                             </div>
-                            <button type="button" class="btn btn-primary" id="decode-submit"><b>Sayeth the Lord!</b></button>
+                            <button type="button" class="btn btn-primary" id="reveal-submit" ><b>Sayeth the Lord!</b></button>
+                            <button type="button" class="btn btn-primary" id="reveal-output-move" style="display: none;"><b><i class="fa fa-hand-o-up"></i></b></button>
                         </div>
                     </div>
                 </div>
@@ -64,20 +65,27 @@
         <script src="/static/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             $(function() {
-                $('#encode-submit').on('click', function(e) {
-                    $.post("/praise", { words: $('#encode-text').val() }, function(text) {
-                        $('#encode-output').empty();
-                        $('#encode-output').append(text);
-                        $('#encode-output-alert').css('display', 'block');
+                $('#praise-submit').on('click', function(e) {
+                    $.post("/praise", { words: $('#praise-text').val() }, function(text) {
+                        $('#praise-output').empty();
+                        $('#praise-output').append(text);
+                        $('#praise-output-alert').css('display', 'block');
+                        $('#praise-output-move').css('display', 'inline');
                     });
                 });
-
-                $('#decode-submit').on('click', function(e) {
-                    $.post("/reveal", { words: $('#decode-text').val() }, function(text) {
-                        $('#decode-output').empty();
-                        $('#decode-output').append(text);
-                        $('#decode-output-alert').css('display', 'block');
+                $('#praise-output-move').on('click', function(e) {
+                    $('#reveal-text').val($('#praise-output').text());
+                });
+                $('#reveal-submit').on('click', function(e) {
+                    $.post("/reveal", { words: $('#reveal-text').val() }, function(text) {
+                        $('#reveal-output').empty();
+                        $('#reveal-output').append(text);
+                        $('#reveal-output-alert').css('display', 'block');
+                        $('#reveal-output-move').css('display', 'inline');
                     });
+                });
+                $('#reveal-output-move').on('click', function(e) {
+                    $('#praise-text').val($('#reveal-output').text());
                 });
             });
         </script>
