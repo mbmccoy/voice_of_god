@@ -20,7 +20,7 @@ def bits(byte_string):
 
 
 def generate_ngram_dict(filename, tuple_length):
-    """ Generate a dict with ngrams as key following words as value
+    """Generate a dict with ngrams as key following words as value
 
     :param filename:  Filename to read from.
     :param tuple_length: The length of the ngram keys

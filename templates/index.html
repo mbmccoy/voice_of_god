@@ -65,7 +65,7 @@
         <script type="text/javascript">
             $(function() {
                 $('#encode-submit').on('click', function(e) {
-                    $.post("/encode", { words: $('#encode-text').val() }, function(text) {
+                    $.post("/praise", { words: $('#encode-text').val() }, function(text) {
                         $('#encode-output').empty();
                         $('#encode-output').append(text);
                         $('#encode-output-alert').css('display', 'block');
@@ -73,7 +73,7 @@
                 });
 
                 $('#decode-submit').on('click', function(e) {
-                    $.post("/decode", { words: $('#decode-text').val() }, function(text) {
+                    $.post("/reveal", { words: $('#decode-text').val() }, function(text) {
                         $('#decode-output').empty();
                         $('#decode-output').append(text);
                         $('#decode-output-alert').css('display', 'block');
