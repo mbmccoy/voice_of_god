@@ -28,7 +28,11 @@ def flask_index():
 
 @app.route("/praise", methods=['GET', 'POST'])
 def flask_encode():
-    return god.praise(request.form['words'])
+	try:
+    	return god.praise(request.form['words'])
+
+    except god_zip.Heresy as h:
+    	return "Heresy! " + str(h)
 
 @app.route("/reveal", methods=['GET', 'POST'])
 def flask_decode():
