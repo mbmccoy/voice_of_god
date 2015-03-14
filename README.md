@@ -51,7 +51,7 @@ Yes, we've even created an API using Flask.
 
 ### Encode to word of God
 ```
-MY_WORDS="I prase unto thee..."
+MY_WORDS="I praise unto thee..."
 curl -s --data "words=${MY_WORDS}" http://www.holyvoiceofgod.com/praise | tee HisVoice.txt
 ```
 
