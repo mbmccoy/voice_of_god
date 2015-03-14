@@ -1,5 +1,6 @@
 from collections import defaultdict
 import gzip
+import os
 import random
 
 import textwrap
@@ -57,7 +58,9 @@ class GodZip(object):
         self.compress = compress
         self.line_width = line_width
         self.tuple_length = tuple_length
-        self.god_grams = generate_ngram_dict('data/bible-kjv.raw.txt', tuple_length)
+
+        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'bible-kjv.raw.txt')
+        self.god_grams = generate_ngram_dict(data_path, tuple_length)
         self.capital_tuples = [key for key, value in self.god_grams.items()
                                if key[0][0].isupper()]
 
